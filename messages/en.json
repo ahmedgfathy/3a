@@ -1,0 +1,56 @@
+{
+  "HomePage": {
+    "title": "3a Transportation",
+    "brand": "3a",
+    "about": "About Us",
+    "services": "Our Services",
+    "whyChooseUs": "Why Choose Us?"
+  },
+  "About": {
+    "title": "About Us",
+    "description": "We are a transportation services company offering ride-hailing through a WhatsApp Business group. Customers can request a ride at any time, and the nearest available driver responds immediately. We operate using a fleet of organized private cars driven by professional drivers. We also provide car leasing services, car sales assistance, and corporate transportation contracts."
+  },
+  "Services": {
+    "title": "Our Services",
+    "rideHailing": {
+      "title": "Ride-Hailing via WhatsApp",
+      "description": "We manage a dedicated WhatsApp Business group for instant ride requests.",
+      "points": [
+        "Customers send a request in the group",
+        "The nearest driver responds immediately",
+        "Clean and organized private vehicles",
+        "Fast, simple, and cost-effective transportation"
+      ]
+    },
+    "leasing": {
+      "title": "Car Leasing & Sales for Owners",
+      "description": "We offer a full car leasing and selling service for vehicle owners:",
+      "points": [
+        "Owners can list their cars for rent or sale",
+        "We handle marketing, communication, and coordination",
+        "Full management of the leasing and handover process"
+      ]
+    },
+    "corporate": {
+      "title": "Corporate Transportation Contracts",
+      "description": "We provide long-term transportation services for factories and companies:",
+      "points": [
+        "Microbuses",
+        "Private cars",
+        "Daily staff transportation for workers, engineers, and technicians",
+        "Full scheduling and route management"
+      ]
+    }
+  },
+  "WhyChooseUs": {
+    "title": "Why Choose Us?",
+    "points": [
+      "Simple WhatsApp-based ride-hail system",
+      "Large network of available drivers",
+      "Organized fleet of private vehicles",
+      "Car rental & sales marketplace",
+      "Corporate transportation contracts",
+      "Flexible, affordable, and reliable solutions"
+    ]
+  }
+}
