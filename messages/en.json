@@ -52,5 +52,103 @@
       "Corporate transportation contracts",
       "Flexible, affordable, and reliable solutions"
     ]
+  },
+  "Footer": {
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "visionMission": "Our Vision & Mission",
+    "rights": "© {year} 3a Transportation. All rights reserved."
+  },
+  "ServiceDetails": {
+    "rideHailing": {
+      "title": "Ride-Hailing via WhatsApp",
+      "description": "Experience the convenience of requesting a ride directly through WhatsApp. No apps to download, just a simple message to our dedicated group.",
+      "heroImageAlt": "Professional driver opening car door for passenger",
+      "features": [
+        "Instant response from nearby drivers",
+        "Safe and clean private cars",
+        "Professional drivers",
+        "Competitive pricing"
+      ],
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": [
+          "Join our exclusive WhatsApp Business group.",
+          "Send your current location and destination.",
+          "The nearest available driver will accept your request instantly.",
+          "Enjoy a safe and comfortable ride to your destination."
+        ]
+      },
+      "benefits": {
+        "title": "Why Ride with 3a?",
+        "items": [
+          "No surge pricing - consistent rates.",
+          "Direct communication with drivers.",
+          "Lost & Found assistance via the group admin.",
+          "24/7 availability."
+        ]
+      }
+    },
+    "leasing": {
+      "title": "Car Leasing & Sales",
+      "description": "We help car owners monetize their vehicles through our leasing program. Whether you want to rent out your car or sell it, we handle everything from marketing to handover.",
+      "heroImageAlt": "Car keys being handed over in a showroom",
+      "features": [
+        "Hassle-free management",
+        "Verified renters",
+        "Marketing and promotion",
+        "Secure transactions"
+      ],
+      "forOwners": {
+        "title": "For Car Owners",
+        "content": "Turn your idle vehicle into a passive income stream. We vet all renters, handle the paperwork, and ensure your car is returned in the same condition."
+      },
+      "forRenters": {
+        "title": "For Renters",
+        "content": "Choose from a wide variety of well-maintained vehicles for daily, weekly, or monthly rental. Competitive rates and flexible terms."
+      }
+    },
+    "corporate": {
+      "title": "Corporate Transportation",
+      "description": "Reliable transportation solutions for your business. We ensure your employees get to work on time and in comfort, improving productivity and satisfaction.",
+      "heroImageAlt": "Corporate shuttle bus in the city",
+      "features": [
+        "Customized routes and schedules",
+        "Fleet of microbuses and cars",
+        "Dedicated account manager",
+        "Monthly billing"
+      ],
+      "whyPartner": {
+        "title": "Why Partner With Us?",
+        "items": [
+          "Punctuality Guarantee: We track all trips to ensure on-time arrivals.",
+          "Cost Efficiency: Optimized routes to save fuel and time.",
+          "Comfort: Modern, air-conditioned vehicles.",
+          "Safety: Background-checked drivers and regular vehicle maintenance."
+        ]
+      },
+      "fleet": {
+        "title": "Our Fleet",
+        "description": "We offer a diverse fleet to match your specific needs, ranging from 4-seater sedans for executives to 14-seater microbuses for staff transport."
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "About Us",
+    "content": "3a Transportation is a leading provider of innovative transportation solutions. We are dedicated to simplifying the way people move, offering a range of services from ride-hailing to corporate transportation and vehicle leasing. Our mission is to provide safe, reliable, and accessible transportation for everyone."
+  },
+  "ContactPage": {
+    "title": "Contact Us",
+    "content": "Get in touch with us for any inquiries. We are here to help you with all your transportation needs.",
+    "email": "Email: info@3a-transport.com",
+    "phone": "Phone: +123 456 7890",
+    "address": "Address: 123 Main St, City, Country"
+  },
+  "VisionMissionPage": {
+    "title": "Our Vision & Mission",
+    "visionTitle": "Our Vision",
+    "visionContent": "To be the most trusted and efficient transportation partner in the region, known for our commitment to quality, safety, and customer satisfaction.",
+    "missionTitle": "Our Mission",
+    "missionContent": "To provide safe, reliable, and accessible transportation services that meet the diverse needs of our individual and corporate clients, while fostering a culture of excellence and innovation."
   }
 }

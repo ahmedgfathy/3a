@@ -7,6 +7,7 @@ export default function HomePage() {
   const tAbout = useTranslations('About');
   const tServices = useTranslations('Services');
   const tWhy = useTranslations('WhyChooseUs');
+  const tFooter = useTranslations('Footer');
 
   return (
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
@@ -114,7 +115,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Ride Hailing Card */}
-            <div className="group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
+            <Link href="/services/ride-hailing" className="block group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
               <div className="w-12 h-12 bg-black dark:bg-white rounded-full mb-6 flex items-center justify-center text-white dark:text-black font-bold text-xl">
                 <Car size={24} />
               </div>
@@ -127,10 +128,10 @@ export default function HomePage() {
                   <li key={i}>• {point}</li>
                 ))}
               </ul>
-            </div>
+            </Link>
 
             {/* Leasing Card */}
-            <div className="group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
+            <Link href="/services/leasing" className="block group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
               <div className="w-12 h-12 bg-black dark:bg-white rounded-full mb-6 flex items-center justify-center text-white dark:text-black font-bold text-xl">
                 <Key size={24} />
               </div>
@@ -143,10 +144,10 @@ export default function HomePage() {
                   <li key={i}>• {point}</li>
                 ))}
               </ul>
-            </div>
+            </Link>
 
             {/* Corporate Card */}
-            <div className="group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
+            <Link href="/services/corporate" className="block group p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-colors duration-300">
               <div className="w-12 h-12 bg-black dark:bg-white rounded-full mb-6 flex items-center justify-center text-white dark:text-black font-bold text-xl">
                 <Building2 size={24} />
               </div>
@@ -159,7 +160,7 @@ export default function HomePage() {
                   <li key={i}>• {point}</li>
                 ))}
               </ul>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -182,10 +183,30 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-black text-white text-center">
+      <footer className="py-12 bg-black text-white">
         <div className="container mx-auto px-6">
-          <h3 className="text-2xl font-bold mb-4">3a Transportation</h3>
-          <p className="text-zinc-400">© {new Date().getFullYear()} 3a Transportation. All rights reserved.</p>
+          <div className="grid md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
+            <div className="md:col-span-2">
+              <h3 className="text-2xl font-bold mb-4">{t('brand')}</h3>
+              <p className="text-zinc-400 max-w-sm mx-auto md:mx-0">{tAbout('description')}</p>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4 text-zinc-400">Company</h4>
+              <ul className="space-y-2">
+                <li><Link href="/about" className="hover:text-zinc-300 transition-colors">{tFooter('aboutUs')}</Link></li>
+                <li><Link href="/vision-mission" className="hover:text-zinc-300 transition-colors">{tFooter('visionMission')}</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4 text-zinc-400">Support</h4>
+              <ul className="space-y-2">
+                <li><Link href="/contact" className="hover:text-zinc-300 transition-colors">{tFooter('contactUs')}</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-zinc-800 pt-8 text-center text-zinc-400">
+            <p>{tFooter('rights', { year: new Date().getFullYear() })}</p>
+          </div>
         </div>
       </footer>
     </main>
