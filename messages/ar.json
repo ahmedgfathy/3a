@@ -2,6 +2,7 @@
     "HomePage": {
         "title": "ثري ايه للنقل",
         "brand": "ثري ايه",
+        "slogan": "مشاوير",
         "about": "من نحن",
         "services": "خدماتنا",
         "whyChooseUs": "مميزاتنا"
@@ -55,8 +56,11 @@
     },
     "Footer": {
         "aboutUs": "من نحن",
+        "aboutUsDesc": "تعرف على شركتنا وما يدفعنا للأمام",
         "contactUs": "اتصل بنا",
+        "contactUsDesc": "تواصل مع فريقنا لأي استفسارات",
         "visionMission": "رؤيتنا ورسالتنا",
+        "visionMissionDesc": "اكتشف أهدافنا والتزامنا بالتميز",
         "rights": "© {year} ثري ايه للنقل. جميع الحقوق محفوظة."
     },
     "ServiceDetails": {

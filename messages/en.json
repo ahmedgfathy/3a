@@ -2,6 +2,7 @@
   "HomePage": {
     "title": "3a Transportation",
     "brand": "3a",
+    "slogan": "Rides",
     "about": "About Us",
     "services": "Our Services",
     "whyChooseUs": "Why Choose Us?"
@@ -55,8 +56,11 @@
   },
   "Footer": {
     "aboutUs": "About Us",
+    "aboutUsDesc": "Learn about our company and what drives us forward",
     "contactUs": "Contact Us",
+    "contactUsDesc": "Get in touch with our team for any inquiries",
     "visionMission": "Our Vision & Mission",
+    "visionMissionDesc": "Discover our goals and commitment to excellence",
     "rights": "© {year} 3a Transportation. All rights reserved."
   },
   "ServiceDetails": {

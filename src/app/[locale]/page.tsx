@@ -51,14 +51,20 @@ export default function HomePage() {
           {/* Text Content */}
           <div className="max-w-xl space-y-6 text-center md:text-left">
             {/* Mobile: Simple Greeting / Tagline */}
-            <h1 className="block md:hidden text-3xl font-bold leading-tight tracking-tighter">
-              {t('title')}
-            </h1>
+            <div className="block md:hidden">
+              <h1 className="text-3xl font-bold leading-tight tracking-tighter">
+                {t('title')}
+              </h1>
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 mt-2">{t('slogan')}</p>
+            </div>
 
             {/* Desktop: Full Title & Description */}
-            <h1 className="hidden md:block text-5xl lg:text-7xl font-bold leading-tight tracking-tighter">
-              {t('title')}
-            </h1>
+            <div className="hidden md:block">
+              <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tighter">
+                {t('title')}
+              </h1>
+              <p className="text-2xl lg:text-3xl text-zinc-600 dark:text-zinc-400 font-light mt-4">{t('slogan')}</p>
+            </div>
             <p className="hidden md:block text-xl lg:text-2xl text-zinc-600 dark:text-zinc-400 font-light">
               {tAbout('description')}
             </p>
@@ -95,24 +101,24 @@ export default function HomePage() {
 
             {/* Mobile Action Grid (Inside Widget or Just Below) */}
             <div className="mt-8 grid grid-cols-3 gap-4 md:hidden">
-              <div className="flex flex-col items-center gap-2">
+              <Link href="/services/ride-hailing" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Car size={24} />
                 </div>
                 <span className="text-xs font-medium">Ride</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
+              </Link>
+              <Link href="/services/leasing" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Key size={24} />
                 </div>
                 <span className="text-xs font-medium">Lease</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
+              </Link>
+              <Link href="/services/corporate" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Building2 size={24} />
                 </div>
                 <span className="text-xs font-medium">Corp</span>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -208,15 +214,51 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="font-bold mb-4 text-zinc-400">Company</h4>
-              <ul className="space-y-2">
-                <li><Link href="/about" className="hover:text-zinc-300 transition-colors">{tFooter('aboutUs')}</Link></li>
-                <li><Link href="/vision-mission" className="hover:text-zinc-300 transition-colors">{tFooter('visionMission')}</Link></li>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/about" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Info size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('aboutUs')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('aboutUsDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/vision-mission" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Target size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('visionMission')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('visionMissionDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4 text-zinc-400">Support</h4>
-              <ul className="space-y-2">
-                <li><Link href="/contact" className="hover:text-zinc-300 transition-colors">{tFooter('contactUs')}</Link></li>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/contact" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Mail size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('contactUs')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('contactUsDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
