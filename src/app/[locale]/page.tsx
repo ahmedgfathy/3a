@@ -85,24 +85,24 @@ export default function HomePage() {
 
             {/* Mobile Action Grid (Inside Widget or Just Below) */}
             <div className="mt-8 grid grid-cols-3 gap-4 md:hidden">
-              <div className="flex flex-col items-center gap-2">
+              <Link href="/services/ride-hailing" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Car size={24} />
                 </div>
                 <span className="text-xs font-medium">Ride</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
+              </Link>
+              <Link href="/services/leasing" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Key size={24} />
                 </div>
                 <span className="text-xs font-medium">Lease</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
+              </Link>
+              <Link href="/services/corporate" className="flex flex-col items-center gap-2">
                 <div className="w-14 h-14 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-black dark:text-white">
                   <Building2 size={24} />
                 </div>
                 <span className="text-xs font-medium">Corp</span>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
