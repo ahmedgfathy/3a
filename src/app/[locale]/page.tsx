@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Car, Key, Building2 } from 'lucide-react';
+import Image from 'next/image';
 
 export default function HomePage() {
   const t = useTranslations('HomePage');
@@ -13,7 +14,16 @@ export default function HomePage() {
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       {/* Navigation */}
       <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-50">
-        <div className="text-2xl font-bold tracking-tighter">{t('brand')}</div>
+        <Link href="/" className="flex items-center">
+          <Image 
+            src="/logo.svg" 
+            alt="3a Transportation" 
+            width={120} 
+            height={40}
+            className="h-8 w-auto dark:invert"
+            priority
+          />
+        </Link>
         <div className="space-x-4 rtl:space-x-reverse font-medium">
           <Link href="/" locale="en" className="hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">EN</Link>
           <Link href="/" locale="ar" className="hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">AR</Link>
@@ -187,7 +197,13 @@ export default function HomePage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
             <div className="md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">{t('brand')}</h3>
+              <Image 
+                src="/logo.svg" 
+                alt="3a Transportation" 
+                width={120} 
+                height={40}
+                className="h-8 w-auto mb-4 invert mx-auto md:mx-0"
+              />
               <p className="text-zinc-400 max-w-sm mx-auto md:mx-0">{tAbout('description')}</p>
             </div>
             <div>
