@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { Roboto, Cairo } from "next/font/google";
 import "../globals.css";
 
@@ -17,10 +17,15 @@ const cairo = Cairo({
   display: 'swap',
 });
 
-export const metadata = {
-  title: "3a Transportation",
-  description: "Premium Ride-Hailing & Corporate Transportation Services",
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
+  
+  return {
+    title: `${t('title')} - ${t('slogan')}`,
+    description: "Premium Ride-Hailing & Corporate Transportation Services",
+  };
+}
 
 export default async function LocaleLayout({
   children,
