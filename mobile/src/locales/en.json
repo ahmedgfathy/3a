@@ -1,0 +1,39 @@
+{
+  "home": {
+    "title": "3a Transportation",
+    "brand": "3a",
+    "slogan": "Rides",
+    "requestRide": "Request Ride",
+    "pickupLocation": "Current Location",
+    "destination": "Destination",
+    "services": {
+      "ride": "Ride",
+      "lease": "Lease",
+      "corporate": "Corp"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "description": "We are a transportation services company offering ride-hailing through a WhatsApp Business group. Customers can request a ride at any time, and the nearest available driver responds immediately."
+  },
+  "services": {
+    "title": "Our Services",
+    "rideHailing": {
+      "title": "Ride-Hailing via WhatsApp",
+      "description": "We manage a dedicated WhatsApp Business group for instant ride requests."
+    },
+    "leasing": {
+      "title": "Car Leasing & Sales",
+      "description": "We offer a full car leasing and selling service for vehicle owners."
+    },
+    "corporate": {
+      "title": "Corporate Transportation",
+      "description": "We provide long-term transportation services for factories and companies."
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About"
+  }
+}
