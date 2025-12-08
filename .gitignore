@@ -10,6 +10,15 @@
 !.yarn/releases
 !.yarn/versions
 
+# React Native / Expo
+mobile/node_modules
+mobile/.expo
+mobile/.expo-shared
+mobile/dist/
+mobile/npm-debug.*
+mobile/yarn-error.log
+mobile/package-lock.json
+
 # testing
 /coverage
 
