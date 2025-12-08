@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import { Car, Key, Building2 } from 'lucide-react';
+import { Car, Key, Building2, Info, Mail, Target } from 'lucide-react';
 
 export default function HomePage() {
   const t = useTranslations('HomePage');
@@ -192,15 +192,51 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="font-bold mb-4 text-zinc-400">Company</h4>
-              <ul className="space-y-2">
-                <li><Link href="/about" className="hover:text-zinc-300 transition-colors">{tFooter('aboutUs')}</Link></li>
-                <li><Link href="/vision-mission" className="hover:text-zinc-300 transition-colors">{tFooter('visionMission')}</Link></li>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/about" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Info size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('aboutUs')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('aboutUsDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/vision-mission" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Target size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('visionMission')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('visionMissionDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4 text-zinc-400">Support</h4>
-              <ul className="space-y-2">
-                <li><Link href="/contact" className="hover:text-zinc-300 transition-colors">{tFooter('contactUs')}</Link></li>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/contact" className="group block hover:text-zinc-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center group-hover:bg-zinc-700 transition-colors flex-shrink-0">
+                        <Mail size={20} className="text-zinc-400 group-hover:text-white" />
+                      </div>
+                      <div className="flex-1 text-left rtl:text-right">
+                        <div className="font-semibold">{tFooter('contactUs')}</div>
+                        <div className="text-sm text-zinc-500 mt-1">{tFooter('contactUsDesc')}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
