@@ -13,7 +13,10 @@ export default function HomePage() {
     <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       {/* Navigation */}
       <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-50">
-        <div className="text-2xl font-bold tracking-tighter">{t('brand')}</div>
+        <div className="flex flex-col">
+          <div className="text-2xl font-bold tracking-tighter">{t('brand')}</div>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400 tracking-wide">{t('slogan')}</div>
+        </div>
         <div className="space-x-4 rtl:space-x-reverse font-medium">
           <Link href="/" locale="en" className="hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">EN</Link>
           <Link href="/" locale="ar" className="hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">AR</Link>
@@ -41,14 +44,20 @@ export default function HomePage() {
           {/* Text Content */}
           <div className="max-w-xl space-y-6 text-center md:text-left">
             {/* Mobile: Simple Greeting / Tagline */}
-            <h1 className="block md:hidden text-3xl font-bold leading-tight tracking-tighter">
-              {t('title')}
-            </h1>
+            <div className="block md:hidden">
+              <h1 className="text-3xl font-bold leading-tight tracking-tighter">
+                {t('title')}
+              </h1>
+              <p className="text-lg text-zinc-600 dark:text-zinc-400 mt-2">{t('slogan')}</p>
+            </div>
 
             {/* Desktop: Full Title & Description */}
-            <h1 className="hidden md:block text-5xl lg:text-7xl font-bold leading-tight tracking-tighter">
-              {t('title')}
-            </h1>
+            <div className="hidden md:block">
+              <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tighter">
+                {t('title')}
+              </h1>
+              <p className="text-2xl lg:text-3xl text-zinc-600 dark:text-zinc-400 font-light mt-4">{t('slogan')}</p>
+            </div>
             <p className="hidden md:block text-xl lg:text-2xl text-zinc-600 dark:text-zinc-400 font-light">
               {tAbout('description')}
             </p>
@@ -187,7 +196,8 @@ export default function HomePage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
             <div className="md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4">{t('brand')}</h3>
+              <h3 className="text-2xl font-bold mb-1">{t('brand')}</h3>
+              <p className="text-sm text-zinc-400 mb-4">{t('slogan')}</p>
               <p className="text-zinc-400 max-w-sm mx-auto md:mx-0">{tAbout('description')}</p>
             </div>
             <div>

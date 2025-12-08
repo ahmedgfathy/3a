@@ -18,7 +18,7 @@ const cairo = Cairo({
 });
 
 export const metadata = {
-  title: "3a Transportation",
+  title: "3a Transportation - Rides",
   description: "Premium Ride-Hailing & Corporate Transportation Services",
 };
 
