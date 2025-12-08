@@ -249,7 +249,6 @@ const styles = StyleSheet.create({
   },
   textRTL: {
     textAlign: 'right',
-    writingDirection: 'rtl',
   },
   bookingWidget: {
     backgroundColor: '#1F1F1F',
@@ -328,7 +327,6 @@ const styles = StyleSheet.create({
   },
   serviceCard: {
     alignItems: 'center',
-    gap: 12,
   },
   serviceIcon: {
     width: 64,
@@ -337,6 +335,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1F1F1F',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 12,
   },
   serviceLabel: {
     color: '#FFF',
@@ -358,7 +357,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 16,
     marginBottom: 16,
-    gap: 16,
   },
   serviceInfoIcon: {
     width: 48,
@@ -367,6 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 16,
   },
   serviceInfoContent: {
     flex: 1,
