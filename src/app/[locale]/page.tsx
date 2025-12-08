@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import { Car, Key, Building2 } from 'lucide-react';
+import { Car, Key, Building2, Info, Target, Mail } from 'lucide-react';
 import Image from 'next/image';
 
 export default function HomePage() {
