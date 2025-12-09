@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -18,11 +18,8 @@ interface MapBackgroundProps {
   } | null;
 }
 
-const { width, height } = Dimensions.get('window');
-
 export default function MapBackground({ userLocation }: MapBackgroundProps) {
   const [cars, setCars] = useState<CarMarker[]>([]);
-  const mapRef = useRef<MapView>(null);
 
   // Default location (Cairo, Egypt) if user location not available
   const defaultRegion = {
@@ -46,7 +43,7 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
     const centerLat = region.latitude;
     const centerLng = region.longitude;
 
-    // Create 8-12 car markers scattered around the user's location
+    // Create 10 car markers scattered around the user's location
     const initialCars: CarMarker[] = Array.from({ length: 10 }, (_, i) => {
       const angle = (i / 10) * 2 * Math.PI;
       const distance = 0.01 + Math.random() * 0.03;
@@ -105,7 +102,6 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
 
   return (
     <MapView
-      ref={mapRef}
       provider={PROVIDER_GOOGLE}
       style={styles.map}
       initialRegion={region}
