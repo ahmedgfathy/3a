@@ -9,12 +9,16 @@ import {
   StatusBar,
   Pressable,
   I18nManager,
-  Alert,
+  Linking,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import MapBackground from '../components/MapBackground';
+
+const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation();
@@ -36,9 +40,8 @@ export default function HomeScreen() {
     try {
       // First check if permission is already granted
       const { status: existingStatus } = await Location.getForegroundPermissionsAsync();
-      
+
       if (existingStatus === 'granted') {
-        // Permission already granted, get location
         const location = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Balanced,
         });
@@ -62,27 +65,30 @@ export default function HomeScreen() {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
         });
-      } else {
-        // Permission denied - show a more helpful message
-        Alert.alert(
-          t('home.location.permissionTitle'),
-          t('home.location.permissionDenied'),
-          [
-            {
-              text: t('home.location.cancel'),
-              style: 'cancel',
-            },
-          ]
-        );
       }
+      // Removed the alert for permission denied to keep UI clean
     } catch (error) {
       console.error('Error requesting location permission:', error);
     }
   };
 
   const handleRequestRide = () => {
-    // Placeholder for ride request functionality
-    alert(`${t('home.requestRide')}\n${t('home.pickupLocation')}: ${pickupLocation}\n${t('home.destination')}: ${destination}`);
+    // Format message for WhatsApp
+    const message = `Hello 3a Transportation,\n\nI would like to request a ride.\n\n📍 Pickup: ${pickupLocation || 'My Location'}\n🏁 Destination: ${destination || 'Not specified'}`;
+    const encodedMessage = encodeURIComponent(message);
+    const phoneNumber = '201234567890'; // Replace with actual support number
+    const url = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          // Fallback for web or if whatsapp is not installed
+          return Linking.openURL(`https://wa.me/${phoneNumber}?text=${encodedMessage}`);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   };
 
   const toggleLanguage = () => {
@@ -92,19 +98,19 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
       {/* Map Background */}
       <View style={styles.mapContainer}>
         <MapBackground userLocation={userLocation} />
         {/* Dark overlay to make content readable */}
         <View style={styles.mapOverlay} />
       </View>
-      
+
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.logo}>{t('home.brand')}</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.languageButton}
           onPress={toggleLanguage}
         >
@@ -114,29 +120,11 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Hero Section */}
-        <View style={styles.heroSection}>
-          <Text style={[styles.title, isRTL && styles.textRTL]}>
-            {t('home.title')}
-          </Text>
-          <Text style={[styles.slogan, isRTL && styles.textRTL]}>
-            {t('home.slogan')}
-          </Text>
-          <Text style={[styles.description, isRTL && styles.textRTL]}>
-            {t('about.description')}
-          </Text>
-        </View>
+      {/* Main Content - Centered */}
+      <View style={styles.mainContent}>
 
         {/* Booking Widget */}
         <View style={styles.bookingWidget}>
-          <Text style={[styles.widgetTitle, isRTL && styles.textRTL]}>
-            {t('services.rideHailing.title')}
-          </Text>
-
           {/* Pickup Location Input */}
           <View style={styles.inputContainer}>
             <View style={styles.inputIcon}>
@@ -169,7 +157,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Request Ride Button */}
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.requestButton}
             onPress={handleRequestRide}
           >
@@ -179,85 +167,31 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Quick Services */}
-        <View style={styles.servicesGrid}>
-          <Pressable style={styles.serviceCard}>
-            <View style={styles.serviceIcon}>
-              <MaterialCommunityIcons name="car" size={28} color="#000" />
+        {/* Quick Services Icons - Floating at bottom */}
+        <View style={styles.servicesContainer}>
+          <Pressable style={styles.serviceItem} onPress={handleRequestRide}>
+            <View style={styles.serviceIconContainer}>
+              <MaterialCommunityIcons name="car" size={32} color="#FFD700" />
             </View>
-            <Text style={[styles.serviceLabel, isRTL && styles.textRTL]}>
-              {t('home.services.ride')}
-            </Text>
+            <Text style={styles.serviceLabel}>{t('home.services.ride')}</Text>
           </Pressable>
 
-          <Pressable style={styles.serviceCard}>
-            <View style={styles.serviceIcon}>
-              <MaterialCommunityIcons name="key" size={28} color="#000" />
+          <Pressable style={styles.serviceItem}>
+            <View style={styles.serviceIconContainer}>
+              <MaterialCommunityIcons name="key" size={32} color="#FFD700" />
             </View>
-            <Text style={[styles.serviceLabel, isRTL && styles.textRTL]}>
-              {t('home.services.lease')}
-            </Text>
+            <Text style={styles.serviceLabel}>{t('home.services.lease')}</Text>
           </Pressable>
 
-          <Pressable style={styles.serviceCard}>
-            <View style={styles.serviceIcon}>
-              <MaterialCommunityIcons name="office-building" size={28} color="#000" />
+          <Pressable style={styles.serviceItem}>
+            <View style={styles.serviceIconContainer}>
+              <MaterialCommunityIcons name="office-building" size={32} color="#FFD700" />
             </View>
-            <Text style={[styles.serviceLabel, isRTL && styles.textRTL]}>
-              {t('home.services.corporate')}
-            </Text>
+            <Text style={styles.serviceLabel}>{t('home.services.corporate')}</Text>
           </Pressable>
         </View>
 
-        {/* Services Info */}
-        <View style={styles.servicesInfo}>
-          <Text style={[styles.sectionTitle, isRTL && styles.textRTL]}>
-            {t('services.title')}
-          </Text>
-
-          <View style={styles.serviceInfoCard}>
-            <View style={styles.serviceInfoIcon}>
-              <MaterialCommunityIcons name="car" size={24} color="#FFF" />
-            </View>
-            <View style={styles.serviceInfoContent}>
-              <Text style={[styles.serviceInfoTitle, isRTL && styles.textRTL]}>
-                {t('services.rideHailing.title')}
-              </Text>
-              <Text style={[styles.serviceInfoDesc, isRTL && styles.textRTL]}>
-                {t('services.rideHailing.description')}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.serviceInfoCard}>
-            <View style={styles.serviceInfoIcon}>
-              <MaterialCommunityIcons name="key" size={24} color="#FFF" />
-            </View>
-            <View style={styles.serviceInfoContent}>
-              <Text style={[styles.serviceInfoTitle, isRTL && styles.textRTL]}>
-                {t('services.leasing.title')}
-              </Text>
-              <Text style={[styles.serviceInfoDesc, isRTL && styles.textRTL]}>
-                {t('services.leasing.description')}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.serviceInfoCard}>
-            <View style={styles.serviceInfoIcon}>
-              <MaterialCommunityIcons name="office-building" size={24} color="#FFF" />
-            </View>
-            <View style={styles.serviceInfoContent}>
-              <Text style={[styles.serviceInfoTitle, isRTL && styles.textRTL]}>
-                {t('services.corporate.title')}
-              </Text>
-              <Text style={[styles.serviceInfoDesc, isRTL && styles.textRTL]}>
-                {t('services.corporate.description')}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -276,189 +210,140 @@ const styles = StyleSheet.create({
   },
   mapOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Slightly darker overlay for better content visibility
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Slightly clearer overlay to see map
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight! + 10 : 50,
     paddingBottom: 20,
     zIndex: 10,
   },
   logo: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#FFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
   },
   languageButton: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#1F1F1F',
-    borderRadius: 8,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   languageText: {
     color: '#FFF',
     fontWeight: '600',
     fontSize: 14,
   },
-  scrollContent: {
+  mainContent: {
+    flex: 1,
+    justifyContent: 'flex-end', // Push content to bottom
     paddingBottom: 40,
-  },
-  heroSection: {
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    backgroundColor: '#111',
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 8,
-  },
-  slogan: {
-    fontSize: 20,
-    color: '#9CA3AF',
-    marginBottom: 16,
-  },
-  description: {
-    fontSize: 16,
-    color: '#D1D5DB',
-    lineHeight: 24,
-  },
-  textRTL: {
-    textAlign: 'right',
   },
   bookingWidget: {
     backgroundColor: '#1F1F1F',
-    margin: 20,
-    padding: 24,
-    borderRadius: 16,
+    marginHorizontal: 20,
+    marginBottom: 30, // Space between widget and icons
+    padding: 20,
+    borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  widgetTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 20,
+    shadowRadius: 20,
+    elevation: 10,
+    borderWidth: 1,
+    borderColor: '#333',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
   },
   inputIcon: {
-    width: 40,
+    width: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
   circleDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: '#FFF',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#FFD700', // Gold
   },
   squareDot: {
-    width: 12,
-    height: 12,
+    width: 10,
+    height: 10,
     backgroundColor: '#FFF',
   },
   connectorLine: {
     width: 2,
-    height: 32,
+    height: 30,
     backgroundColor: '#4B5563',
-    marginLeft: 19,
-    marginBottom: 8,
+    marginLeft: 14,
+    marginVertical: 4,
   },
   input: {
     flex: 1,
     backgroundColor: '#111',
-    paddingVertical: 16,
+    paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
     color: '#FFF',
     fontSize: 16,
+    marginLeft: 10,
   },
   inputRTL: {
     textAlign: 'right',
   },
   requestButton: {
-    backgroundColor: '#FFF',
-    paddingVertical: 18,
+    backgroundColor: '#FFD700', // Gold button
+    paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 20,
   },
   requestButtonText: {
     color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  servicesGrid: {
+  servicesContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-    marginBottom: 30,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
-  serviceCard: {
+  serviceItem: {
     alignItems: 'center',
   },
-  serviceIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#1F1F1F',
+  serviceIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(30, 30, 30, 0.9)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#FFD700', // Gold border
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   serviceLabel: {
     color: '#FFF',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
-  },
-  servicesInfo: {
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 20,
-  },
-  serviceInfoCard: {
-    flexDirection: 'row',
-    backgroundColor: '#1F1F1F',
-    padding: 20,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  serviceInfoIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
-  serviceInfoContent: {
-    flex: 1,
-  },
-  serviceInfoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 8,
-  },
-  serviceInfoDesc: {
-    fontSize: 14,
-    color: '#9CA3AF',
-    lineHeight: 20,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 3
   },
 });
