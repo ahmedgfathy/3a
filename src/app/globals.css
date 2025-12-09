@@ -26,9 +26,9 @@ body {
 
 /* Language-specific font stacks */
 html[lang="ar"] body {
-  font-family: 'Segoe UI', 'Tahoma', 'Noto Sans Arabic', sans-serif;
+  font-family: Segoe UI, Tahoma, Noto Sans Arabic, sans-serif;
 }
 
 html[lang="en"] body {
-  font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+  font-family: Segoe UI, Helvetica Neue, Arial, sans-serif;
 }
