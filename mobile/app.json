@@ -40,6 +40,11 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cb43117d-0cc6-4117-80ea-df2a3e489c47"
+      }
     }
   }
 }

@@ -32,11 +32,11 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
 
   const region = userLocation
     ? {
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      }
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05,
+    }
     : defaultRegion;
 
   // Initialize car markers around user location
@@ -131,10 +131,10 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
 
   return (
     <MapView
-      provider={PROVIDER_GOOGLE}
       style={styles.map}
       initialRegion={region}
-      customMapStyle={darkMapStyle}
+      // Removed customMapStyle to ensure map loads even if style is invalid
+      // Removed PROVIDER_GOOGLE to allow default provider fallback
       scrollEnabled={false}
       zoomEnabled={false}
       pitchEnabled={false}
@@ -171,10 +171,10 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
               ],
             }}
           >
-            <MaterialCommunityIcons 
-              name="car" 
-              size={24} 
-              color="#FFD700" 
+            <MaterialCommunityIcons
+              name="car"
+              size={24}
+              color="#FFD700"
               style={{ textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 3 }}
             />
           </Animated.View>
