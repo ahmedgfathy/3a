@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,15 +9,52 @@ import {
   StatusBar,
   Pressable,
   I18nManager,
+  Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
+import MapBackground from '../components/MapBackground';
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation();
   const [pickupLocation, setPickupLocation] = useState('');
   const [destination, setDestination] = useState('');
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [locationPermission, setLocationPermission] = useState<Location.PermissionStatus | null>(null);
   const isRTL = i18n.language === 'ar';
+
+  // Request location permission on mount
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
+
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status);
+
+      if (status === 'granted') {
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      } else {
+        Alert.alert(
+          t('home.location.permissionTitle'),
+          t('home.location.permissionDenied')
+        );
+      }
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
+    }
+  };
 
   const handleRequestRide = () => {
     // Placeholder for ride request functionality
@@ -32,6 +69,13 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
+      
+      {/* Map Background */}
+      <View style={styles.mapContainer}>
+        <MapBackground userLocation={userLocation} />
+        {/* Dark overlay to make content readable */}
+        <View style={styles.mapOverlay} />
+      </View>
       
       {/* Header */}
       <View style={styles.header}>
@@ -199,6 +243,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
+  mapContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  mapOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -206,6 +261,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
+    zIndex: 10,
   },
   logo: {
     fontSize: 32,
