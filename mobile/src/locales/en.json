@@ -10,6 +10,13 @@
       "ride": "Ride",
       "lease": "Lease",
       "corporate": "Corp"
+    },
+    "location": {
+      "permissionTitle": "Location Permission Required",
+      "permissionMessage": "We need your location to show nearby drivers and provide accurate ride services.",
+      "permissionDenied": "Location permission denied. Please enable it in settings to see nearby drivers.",
+      "grantPermission": "Grant Permission",
+      "cancel": "Cancel"
     }
   },
   "about": {

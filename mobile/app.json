@@ -14,7 +14,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.3a.transportation"
+      "bundleIdentifier": "com.3a.transportation",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to show nearby drivers and provide accurate ride services.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to show nearby drivers and provide accurate ride services."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +27,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.3a.transportation"
+      "package": "com.3a.transportation",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     }
   }
 }
