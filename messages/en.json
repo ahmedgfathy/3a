@@ -154,5 +154,17 @@
     "visionContent": "To be the most trusted and efficient transportation partner in the region, known for our commitment to quality, safety, and customer satisfaction.",
     "missionTitle": "Our Mission",
     "missionContent": "To provide safe, reliable, and accessible transportation services that meet the diverse needs of our individual and corporate clients, while fostering a culture of excellence and innovation."
+  },
+  "Navbar": {
+    "home": "Home",
+    "rideHailing": "Ride-Hailing",
+    "leasing": "Leasing",
+    "corporate": "Corporate",
+    "about": "About",
+    "vision": "Vision",
+    "contact": "Contact",
+    "ride": "Ride",
+    "lease": "Lease",
+    "corp": "Corp"
   }
 }
