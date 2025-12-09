@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Animated } from 'react-native';
+import { StyleSheet, Animated, Easing } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -9,6 +9,7 @@ interface CarMarker {
   longitude: number;
   animatedLat: Animated.Value;
   animatedLng: Animated.Value;
+  rotation: Animated.Value;
 }
 
 interface MapBackgroundProps {
@@ -43,10 +44,12 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
     const centerLat = region.latitude;
     const centerLng = region.longitude;
 
-    // Create 10 car markers scattered around the user's location
-    const initialCars: CarMarker[] = Array.from({ length: 10 }, (_, i) => {
-      const angle = (i / 10) * 2 * Math.PI;
-      const distance = 0.01 + Math.random() * 0.03;
+    // Create 15-20 car markers scattered around the user's location for better realism
+    const numberOfCars = 15 + Math.floor(Math.random() * 6); // 15-20 cars
+    const initialCars: CarMarker[] = Array.from({ length: numberOfCars }, (_, i) => {
+      // Use a mix of circular and random distribution for natural placement
+      const angle = (i / numberOfCars) * 2 * Math.PI + (Math.random() - 0.5) * 0.5;
+      const distance = 0.005 + Math.random() * 0.035; // Varied distances
       const lat = centerLat + distance * Math.cos(angle);
       const lng = centerLng + distance * Math.sin(angle);
 
@@ -56,6 +59,7 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
         longitude: lng,
         animatedLat: new Animated.Value(lat),
         animatedLng: new Animated.Value(lng),
+        rotation: new Animated.Value(Math.random() * 360), // Random initial rotation
       };
     });
 
@@ -66,38 +70,63 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
   useEffect(() => {
     if (cars.length === 0) return;
 
-    const animateCars = () => {
-      cars.forEach((car) => {
-        // Random small movements to simulate driving
-        const newLat = car.latitude + (Math.random() - 0.5) * 0.002;
-        const newLng = car.longitude + (Math.random() - 0.5) * 0.002;
+    const animateCar = (car: CarMarker) => {
+      // Generate a new destination with more realistic movement
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 0.001 + Math.random() * 0.004; // Smaller, more realistic movements
+      const newLat = car.latitude + distance * Math.cos(angle);
+      const newLng = car.longitude + distance * Math.sin(angle);
 
-        Animated.parallel([
-          Animated.timing(car.animatedLat, {
-            toValue: newLat,
-            duration: 3000 + Math.random() * 2000,
-            useNativeDriver: false,
-          }),
-          Animated.timing(car.animatedLng, {
-            toValue: newLng,
-            duration: 3000 + Math.random() * 2000,
-            useNativeDriver: false,
-          }),
-        ]).start();
+      // Calculate rotation based on movement direction
+      const deltaLat = newLat - car.latitude;
+      const deltaLng = newLng - car.longitude;
+      const newRotation = Math.atan2(deltaLng, deltaLat) * (180 / Math.PI);
 
+      const duration = 2000 + Math.random() * 3000; // 2-5 seconds for smoother movement
+
+      Animated.parallel([
+        Animated.timing(car.animatedLat, {
+          toValue: newLat,
+          duration,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: false,
+        }),
+        Animated.timing(car.animatedLng, {
+          toValue: newLng,
+          duration,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: false,
+        }),
+        Animated.timing(car.rotation, {
+          toValue: newRotation,
+          duration: duration / 2,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: false,
+        }),
+      ]).start(() => {
         // Update the base coordinates for next animation
         car.latitude = newLat;
         car.longitude = newLng;
+        // Recursively animate to create continuous movement
+        animateCar(car);
       });
     };
 
-    // Initial animation
-    animateCars();
+    // Start animation for each car with a slight delay for natural effect
+    cars.forEach((car, index) => {
+      setTimeout(() => {
+        animateCar(car);
+      }, index * 200); // Stagger start times
+    });
 
-    // Continue animating every 5 seconds
-    const interval = setInterval(animateCars, 5000);
-
-    return () => clearInterval(interval);
+    return () => {
+      // Cleanup - stop all animations
+      cars.forEach((car) => {
+        car.animatedLat.stopAnimation();
+        car.animatedLng.stopAnimation();
+        car.rotation.stopAnimation();
+      });
+    };
   }, [cars]);
 
   return (
@@ -117,6 +146,8 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
       showsBuildings={false}
       showsIndoors={false}
       toolbarEnabled={false}
+      loadingEnabled={true}
+      loadingIndicatorColor="#FFD700"
     >
       {cars.map((car) => (
         <Marker.Animated
@@ -126,8 +157,27 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
             longitude: car.animatedLng,
           }}
           anchor={{ x: 0.5, y: 0.5 }}
+          flat={true}
         >
-          <MaterialCommunityIcons name="car" size={20} color="#FFF" />
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  rotate: car.rotation.interpolate({
+                    inputRange: [0, 360],
+                    outputRange: ['0deg', '360deg'],
+                  }),
+                },
+              ],
+            }}
+          >
+            <MaterialCommunityIcons 
+              name="car" 
+              size={24} 
+              color="#FFD700" 
+              style={{ textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 3 }}
+            />
+          </Animated.View>
         </Marker.Animated>
       ))}
     </MapView>
@@ -140,98 +190,103 @@ const styles = StyleSheet.create({
   },
 });
 
-// Dark map style for Google Maps
+// Dark map style for Google Maps with enhanced styling
 const darkMapStyle = [
   {
     elementType: 'geometry',
-    stylers: [{ color: '#1a1a1a' }],
+    stylers: [{ color: '#0a0a0a' }], // Darker base
   },
   {
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#8a8a8a' }],
+    stylers: [{ color: '#6a6a6a' }],
   },
   {
     elementType: 'labels.text.stroke',
-    stylers: [{ color: '#1a1a1a' }],
+    stylers: [{ color: '#0a0a0a' }],
   },
   {
     featureType: 'administrative',
     elementType: 'geometry',
-    stylers: [{ color: '#2c2c2c' }],
+    stylers: [{ color: '#1c1c1c' }],
   },
   {
     featureType: 'administrative.country',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#9e9e9e' }],
+    stylers: [{ color: '#7e7e7e' }],
   },
   {
     featureType: 'administrative.locality',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#bdbdbd' }],
+    stylers: [{ color: '#9e9e9e' }],
   },
   {
     featureType: 'poi',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#757575' }],
+    stylers: [{ color: '#5a5a5a' }],
   },
   {
     featureType: 'poi.park',
     elementType: 'geometry',
-    stylers: [{ color: '#181818' }],
+    stylers: [{ color: '#0f1f0f' }], // Dark green for parks
   },
   {
     featureType: 'poi.park',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#616161' }],
+    stylers: [{ color: '#4a6a4a' }],
   },
   {
     featureType: 'poi.park',
     elementType: 'labels.text.stroke',
-    stylers: [{ color: '#1b1b1b' }],
+    stylers: [{ color: '#0a0a0a' }],
   },
   {
     featureType: 'road',
     elementType: 'geometry.fill',
-    stylers: [{ color: '#2c2c2c' }],
+    stylers: [{ color: '#1c1c1c' }],
   },
   {
     featureType: 'road',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#8a8a8a' }],
+    stylers: [{ color: '#7a7a7a' }],
   },
   {
     featureType: 'road.arterial',
     elementType: 'geometry',
-    stylers: [{ color: '#373737' }],
+    stylers: [{ color: '#2a2a2a' }],
   },
   {
     featureType: 'road.highway',
     elementType: 'geometry',
-    stylers: [{ color: '#3c3c3c' }],
+    stylers: [{ color: '#3a3a3a' }],
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
+    stylers: [{ color: '#4a4a4a' }],
   },
   {
     featureType: 'road.highway.controlled_access',
     elementType: 'geometry',
-    stylers: [{ color: '#4e4e4e' }],
+    stylers: [{ color: '#4a4a4a' }],
   },
   {
     featureType: 'road.local',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#616161' }],
+    stylers: [{ color: '#5a5a5a' }],
   },
   {
     featureType: 'transit',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#757575' }],
+    stylers: [{ color: '#6a6a6a' }],
   },
   {
     featureType: 'water',
     elementType: 'geometry',
-    stylers: [{ color: '#000000' }],
+    stylers: [{ color: '#000a1a' }], // Deep dark blue for water
   },
   {
     featureType: 'water',
     elementType: 'labels.text.fill',
-    stylers: [{ color: '#3d3d3d' }],
+    stylers: [{ color: '#2a3a4a' }],
   },
 ];

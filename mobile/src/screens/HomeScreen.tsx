@@ -34,6 +34,23 @@ export default function HomeScreen() {
 
   const requestLocationPermission = async () => {
     try {
+      // First check if permission is already granted
+      const { status: existingStatus } = await Location.getForegroundPermissionsAsync();
+      
+      if (existingStatus === 'granted') {
+        // Permission already granted, get location
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+        setLocationPermission(existingStatus);
+        return;
+      }
+
+      // Request permission
       const { status } = await Location.requestForegroundPermissionsAsync();
       setLocationPermission(status);
 
@@ -46,9 +63,16 @@ export default function HomeScreen() {
           longitude: location.coords.longitude,
         });
       } else {
+        // Permission denied - show a more helpful message
         Alert.alert(
           t('home.location.permissionTitle'),
-          t('home.location.permissionDenied')
+          t('home.location.permissionDenied'),
+          [
+            {
+              text: t('home.location.cancel'),
+              style: 'cancel',
+            },
+          ]
         );
       }
     } catch (error) {
@@ -252,7 +276,7 @@ const styles = StyleSheet.create({
   },
   mapOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Slightly darker overlay for better content visibility
   },
   header: {
     flexDirection: 'row',
