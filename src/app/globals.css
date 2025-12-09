@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Language-specific font stacks */
+html[lang="ar"] body {
+  font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
+}
+
+html[lang="en"] body {
+  font-family: 'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif;
+}

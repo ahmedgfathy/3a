@@ -41,7 +41,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={`antialiased bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50`} style={{ fontFamily: locale === 'ar' ? "'Cairo', 'Segoe UI', 'Tahoma', sans-serif" : "'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif" }}>
+      <body className={`antialiased bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50`}>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
