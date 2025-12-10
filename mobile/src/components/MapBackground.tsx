@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Animated, Easing } from 'react-native';
-import MapView, { Marker, UrlTile, PROVIDER_DEFAULT } from 'react-native-maps';
+import { WebView } from 'react-native-webview';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface CarMarker {
-  id: string;
+  id: number;
   latitude: number;
   longitude: number;
-  animatedLat: Animated.Value;
-  animatedLng: Animated.Value;
-  rotation: Animated.Value;
+  heading: number;
 }
 
 interface MapBackgroundProps {
@@ -20,287 +18,116 @@ interface MapBackgroundProps {
 }
 
 export default function MapBackground({ userLocation }: MapBackgroundProps) {
-  const [cars, setCars] = useState<CarMarker[]>([]);
+  const [carMarkers, setCarMarkers] = useState<CarMarker[]>([]);
+  const animationValue = useRef(new Animated.Value(0)).current;
 
-  // Default location (Cairo, Egypt) if user location not available
-  const defaultRegion = {
-    latitude: 30.0444,
-    longitude: 31.2357,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
-  };
-
-  const region = userLocation
-    ? {
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05,
-    }
-    : defaultRegion;
-
-  // Initialize car markers around user location
   useEffect(() => {
-    const centerLat = region.latitude;
-    const centerLng = region.longitude;
+    // Generate random car markers around user location or default Cairo location
+    const centerLat = userLocation?.latitude || 30.0444;
+    const centerLon = userLocation?.longitude || 31.2357;
 
-    // Create 15-20 car markers scattered around the user's location for better realism
-    const numberOfCars = 15 + Math.floor(Math.random() * 6); // 15-20 cars
-    const initialCars: CarMarker[] = Array.from({ length: numberOfCars }, (_, i) => {
-      // Use a mix of circular and random distribution for natural placement
-      const angle = (i / numberOfCars) * 2 * Math.PI + (Math.random() - 0.5) * 0.5;
-      const distance = 0.005 + Math.random() * 0.035; // Varied distances
-      const lat = centerLat + distance * Math.cos(angle);
-      const lng = centerLng + distance * Math.sin(angle);
+    const markers: CarMarker[] = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      latitude: centerLat + (Math.random() - 0.5) * 0.02,
+      longitude: centerLon + (Math.random() - 0.5) * 0.02,
+      heading: Math.random() * 360,
+    }));
 
-      return {
-        id: `car-${i}`,
-        latitude: lat,
-        longitude: lng,
-        animatedLat: new Animated.Value(lat),
-        animatedLng: new Animated.Value(lng),
-        rotation: new Animated.Value(Math.random() * 360), // Random initial rotation
-      };
-    });
+    setCarMarkers(markers);
 
-    setCars(initialCars);
-  }, [region.latitude, region.longitude]);
+    // Animate cars
+    Animated.loop(
+      Animated.timing(animationValue, {
+        toValue: 1,
+        duration: 10000,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      })
+    ).start();
+  }, [userLocation]);
 
-  // Animate cars moving around
-  useEffect(() => {
-    if (cars.length === 0) return;
+  const centerLat = userLocation?.latitude || 30.0444;
+  const centerLon = userLocation?.longitude || 31.2357;
 
-    const animateCar = (car: CarMarker) => {
-      // Generate a new destination with more realistic movement
-      const angle = Math.random() * 2 * Math.PI;
-      const distance = 0.001 + Math.random() * 0.004; // Smaller, more realistic movements
-      const newLat = car.latitude + distance * Math.cos(angle);
-      const newLng = car.longitude + distance * Math.sin(angle);
+  // Leaflet map HTML with animated car markers
+  const mapHTML = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <style>
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100vw; background: #18181b; }
+        .car-marker {
+          width: 30px;
+          height: 30px;
+          background: #FFD700;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+      </style>
+    </head>
+    <body>
+      <div id="map"></div>
+      <script>
+        var map = L.map('map', {
+          zoomControl: false,
+          dragging: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          boxZoom: false,
+          keyboard: false,
+          tap: false
+        }).setView([${centerLat}, ${centerLon}], 13);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap',
+          opacity: 0.6
+        }).addTo(map);
 
-      // Calculate rotation based on movement direction
-      const deltaLat = newLat - car.latitude;
-      const deltaLng = newLng - car.longitude;
-      const newRotation = Math.atan2(deltaLng, deltaLat) * (180 / Math.PI);
+        // Add car markers
+        var carMarkers = ${JSON.stringify(carMarkers)};
+        
+        carMarkers.forEach(function(car) {
+          var carIcon = L.divIcon({
+            html: '<div class="car-marker"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" fill="#000"/></svg></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+          });
+          
+          L.marker([car.latitude, car.longitude], { icon: carIcon }).addTo(map);
+        });
 
-      const duration = 2000 + Math.random() * 3000; // 2-5 seconds for smoother movement
-
-      Animated.parallel([
-        Animated.timing(car.animatedLat, {
-          toValue: newLat,
-          duration,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(car.animatedLng, {
-          toValue: newLng,
-          duration,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(car.rotation, {
-          toValue: newRotation,
-          duration: duration / 2,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
-        }),
-      ]).start(() => {
-        // Update the base coordinates for next animation
-        car.latitude = newLat;
-        car.longitude = newLng;
-        // Recursively animate to create continuous movement
-        animateCar(car);
-      });
-    };
-
-    // Start animation for each car with a slight delay for natural effect
-    cars.forEach((car, index) => {
-      setTimeout(() => {
-        animateCar(car);
-      }, index * 200); // Stagger start times
-    });
-
-    return () => {
-      // Cleanup - stop all animations
-      cars.forEach((car) => {
-        car.animatedLat.stopAnimation();
-        car.animatedLng.stopAnimation();
-        car.rotation.stopAnimation();
-      });
-    };
-  }, [cars]);
+        // Animate cars slightly
+        var index = 0;
+        setInterval(function() {
+          index = (index + 1) % carMarkers.length;
+          var car = carMarkers[index];
+          car.latitude += (Math.random() - 0.5) * 0.0005;
+          car.longitude += (Math.random() - 0.5) * 0.0005;
+        }, 2000);
+      </script>
+    </body>
+    </html>
+  `;
 
   return (
-    <MapView
+    <WebView
+      source={{ html: mapHTML }}
       style={styles.map}
-      initialRegion={region}
-      // Use default provider (undefined) to support UrlTile
       scrollEnabled={false}
-      zoomEnabled={false}
-      pitchEnabled={false}
-      rotateEnabled={false}
-      showsUserLocation={!!userLocation}
-      showsMyLocationButton={false}
-      showsCompass={false}
-      showsTraffic={false}
-      showsBuildings={false}
-      showsIndoors={false}
-      toolbarEnabled={false}
-      loadingEnabled={true}
-      loadingIndicatorColor="#FFD700"
-    >
-      {/* OpenStreetMap Fallback Tiles - Works without API Key */}
-      <UrlTile
-        urlTemplate="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        maximumZ={19}
-        flipY={false}
-        zIndex={-1}
-      />
-
-      {/* Dark Overlay for OSM tiles to match app theme */}
-      <UrlTile
-        urlTemplate="http://tile.stamen.com/toner-lines/{z}/{x}/{y}.png" // Optional: Lines overlay or just use a View overlay in parent
-        maximumZ={19}
-        zIndex={-1}
-        opacity={0} // Just placeholder, better handled by parent View overlay
-      />
-      {cars.map((car) => (
-        <Marker.Animated
-          key={car.id}
-          coordinate={{
-            latitude: car.animatedLat,
-            longitude: car.animatedLng,
-          }}
-          anchor={{ x: 0.5, y: 0.5 }}
-          flat={true}
-        >
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  rotate: car.rotation.interpolate({
-                    inputRange: [0, 360],
-                    outputRange: ['0deg', '360deg'],
-                  }),
-                },
-              ],
-            }}
-          >
-            <MaterialCommunityIcons
-              name="car"
-              size={24}
-              color="#FFD700"
-              style={{ textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 1, height: 1 }, textShadowRadius: 3 }}
-            />
-          </Animated.View>
-        </Marker.Animated>
-      ))}
-    </MapView>
+      pointerEvents="none"
+    />
   );
 }
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
   },
 });
-
-// Dark map style for Google Maps with enhanced styling
-const darkMapStyle = [
-  {
-    elementType: 'geometry',
-    stylers: [{ color: '#0a0a0a' }], // Darker base
-  },
-  {
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#6a6a6a' }],
-  },
-  {
-    elementType: 'labels.text.stroke',
-    stylers: [{ color: '#0a0a0a' }],
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry',
-    stylers: [{ color: '#1c1c1c' }],
-  },
-  {
-    featureType: 'administrative.country',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#7e7e7e' }],
-  },
-  {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#9e9e9e' }],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#5a5a5a' }],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry',
-    stylers: [{ color: '#0f1f0f' }], // Dark green for parks
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#4a6a4a' }],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.stroke',
-    stylers: [{ color: '#0a0a0a' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.fill',
-    stylers: [{ color: '#1c1c1c' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#7a7a7a' }],
-  },
-  {
-    featureType: 'road.arterial',
-    elementType: 'geometry',
-    stylers: [{ color: '#2a2a2a' }],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [{ color: '#3a3a3a' }],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#4a4a4a' }],
-  },
-  {
-    featureType: 'road.highway.controlled_access',
-    elementType: 'geometry',
-    stylers: [{ color: '#4a4a4a' }],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#5a5a5a' }],
-  },
-  {
-    featureType: 'transit',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#6a6a6a' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#000a1a' }], // Deep dark blue for water
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#2a3a4a' }],
-  },
-];

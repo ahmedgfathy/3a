@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import MapBackground from '../components/MapBackground';
+import LocationPicker from '../components/LocationPicker';
+import RideRequestView from '../components/RideRequestView';
 
 const { width } = Dimensions.get('window');
 
@@ -24,6 +26,9 @@ export default function HomeScreen() {
   const { t, i18n } = useTranslation();
   const [pickupLocation, setPickupLocation] = useState('');
   const [destination, setDestination] = useState('');
+  const [pickupCoords, setPickupCoords] = useState<{ lat: number; lng: number }>();
+  const [destinationCoords, setDestinationCoords] = useState<{ lat: number; lng: number }>();
+  const [isRideRequested, setIsRideRequested] = useState(false);
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -73,22 +78,11 @@ export default function HomeScreen() {
   };
 
   const handleRequestRide = () => {
-    // Format message for WhatsApp
-    const message = `Hello 3a Transportation,\n\nI would like to request a ride.\n\n📍 Pickup: ${pickupLocation || 'My Location'}\n🏁 Destination: ${destination || 'Not specified'}`;
-    const encodedMessage = encodeURIComponent(message);
-    const phoneNumber = '201234567890'; // Replace with actual support number
-    const url = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          // Fallback for web or if whatsapp is not installed
-          return Linking.openURL(`https://wa.me/${phoneNumber}?text=${encodedMessage}`);
-        } else {
-          return Linking.openURL(url);
-        }
-      })
-      .catch((err) => console.error('An error occurred', err));
+    if (!pickupLocation || !destination) {
+      alert('Please select both pickup and destination locations');
+      return;
+    }
+    setIsRideRequested(true);
   };
 
   const toggleLanguage = () => {
@@ -126,35 +120,26 @@ export default function HomeScreen() {
         {/* Booking Widget */}
         <View style={styles.bookingWidget}>
           {/* Pickup Location Input */}
-          <View style={styles.inputContainer}>
-            <View style={styles.inputIcon}>
-              <View style={styles.circleDot} />
-            </View>
-            <TextInput
-              style={[styles.input, isRTL && styles.inputRTL]}
-              placeholder={t('home.pickupLocation')}
-              placeholderTextColor="#9CA3AF"
-              value={pickupLocation}
-              onChangeText={setPickupLocation}
-            />
-          </View>
-
-          {/* Connector Line */}
-          <View style={styles.connectorLine} />
+          <LocationPicker
+            value={pickupLocation}
+            onChange={(address, lat, lng) => {
+              setPickupLocation(address);
+              if (lat && lng) setPickupCoords({ lat, lng });
+            }}
+            placeholder={t('home.pickupLocation')}
+            icon="pickup"
+          />
 
           {/* Destination Input */}
-          <View style={styles.inputContainer}>
-            <View style={styles.inputIcon}>
-              <View style={styles.squareDot} />
-            </View>
-            <TextInput
-              style={[styles.input, isRTL && styles.inputRTL]}
-              placeholder={t('home.destination')}
-              placeholderTextColor="#9CA3AF"
-              value={destination}
-              onChangeText={setDestination}
-            />
-          </View>
+          <LocationPicker
+            value={destination}
+            onChange={(address, lat, lng) => {
+              setDestination(address);
+              if (lat && lng) setDestinationCoords({ lat, lng });
+            }}
+            placeholder={t('home.destination')}
+            icon="destination"
+          />
 
           {/* Request Ride Button */}
           <TouchableOpacity
@@ -183,6 +168,17 @@ export default function HomeScreen() {
         </View>
 
       </View>
+
+      {/* Ride Request View */}
+      {isRideRequested && (
+        <RideRequestView
+          pickup={pickupLocation}
+          destination={destination}
+          pickupCoords={pickupCoords}
+          destinationCoords={destinationCoords}
+          onClose={() => setIsRideRequested(false)}
+        />
+      )}
     </View>
   );
 }
