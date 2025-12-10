@@ -1,3 +1,4 @@
+@import 'leaflet/dist/leaflet.css';
 @import "tailwindcss";
 
 :root {
@@ -23,4 +24,38 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom Scrollbar for Gold Theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FFD700;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #FFC000;
+}
+
+/* Leaflet Map Dark Theme */
+.leaflet-container {
+  background: #18181b !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #27272a;
+  color: #ffffff;
+  border: 1px solid #FFD700;
+}
+
+.leaflet-popup-tip {
+  background: #27272a;
 }

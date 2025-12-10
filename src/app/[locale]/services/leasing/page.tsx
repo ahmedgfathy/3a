@@ -39,7 +39,7 @@ export default function LeasingPage() {
                 {/* Logo */}
                 <Link href="/" className="relative h-12 w-12 flex items-center justify-center">
                     <Image
-                        src="/logo.png"
+                        src="/logo.svg"
                         alt="3a"
                         width={48}
                         height={48}

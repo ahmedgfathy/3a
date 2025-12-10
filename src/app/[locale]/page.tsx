@@ -1,12 +1,19 @@
+'use client';
+
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Car, Key, Building2, Info, Target, Mail } from 'lucide-react';
 import Image from 'next/image';
+import LocationPicker from '@/components/LocationPicker';
 
 export default function HomePage() {
   const t = useTranslations('Navbar');
   const tServices = useTranslations('Services');
   const tFooter = useTranslations('Footer');
+
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
 
   return (
     <main className="h-screen w-full bg-black text-white overflow-hidden flex flex-col relative">
@@ -28,7 +35,7 @@ export default function HomePage() {
         {/* Logo - Gold Symbol */}
         <Link href="/" className="relative h-12 w-12 flex items-center justify-center">
           <Image
-            src="/logo.png"
+            src="/logo.svg"
             alt="3a"
             width={48}
             height={48}
@@ -81,26 +88,20 @@ export default function HomePage() {
 
           <div className="space-y-4">
             {/* Pickup */}
-            <div className="relative">
-              <div className="absolute top-3.5 left-4 w-2 h-2 bg-[#FFD700] rounded-full shadow-[0_0_8px_#FFD700]" />
-              <input
-                type="text"
-                placeholder="Pickup Location"
-                className="w-full pl-10 pr-4 py-3 bg-black/60 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-[#FFD700] transition-all text-sm"
-              />
-              {/* Connector Line */}
-              <div className="absolute top-6 left-[1.2rem] w-[1px] h-8 bg-zinc-700" />
-            </div>
+            <LocationPicker
+              value={pickup}
+              onChange={(address) => setPickup(address)}
+              placeholder="Pickup Location"
+              icon="pickup"
+            />
 
             {/* Destination */}
-            <div className="relative">
-              <div className="absolute top-3.5 left-4 w-2 h-2 bg-white rounded-none border border-zinc-500" />
-              <input
-                type="text"
-                placeholder="Destination"
-                className="w-full pl-10 pr-4 py-3 bg-black/60 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-[#FFD700] transition-all text-sm"
-              />
-            </div>
+            <LocationPicker
+              value={destination}
+              onChange={(address) => setDestination(address)}
+              placeholder="Destination"
+              icon="destination"
+            />
 
             {/* Request Button */}
             <button className="w-full py-4 bg-[#FFD700] text-black font-bold text-lg rounded-xl hover:bg-[#FFC000] hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all mt-4 uppercase tracking-wide flex items-center justify-center gap-2">
