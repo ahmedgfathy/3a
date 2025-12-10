@@ -6,6 +6,9 @@ import { Link } from '@/i18n/routing';
 import { Car, Key, Building2, Info, Target, Mail } from 'lucide-react';
 import Image from 'next/image';
 import LocationPicker from '@/components/LocationPicker';
+import dynamic from 'next/dynamic';
+
+const RideRequestView = dynamic(() => import('@/components/RideRequestView'), { ssr: false });
 
 export default function HomePage() {
   const t = useTranslations('Navbar');
@@ -14,6 +17,17 @@ export default function HomePage() {
 
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
+  const [pickupCoords, setPickupCoords] = useState<{ lat: number; lng: number }>();
+  const [destinationCoords, setDestinationCoords] = useState<{ lat: number; lng: number }>();
+  const [isRideRequested, setIsRideRequested] = useState(false);
+
+  const handleRequestRide = () => {
+    if (!pickup || !destination) {
+      alert('Please select both pickup and destination locations');
+      return;
+    }
+    setIsRideRequested(true);
+  };
 
   return (
     <main className="h-screen w-full bg-black text-white overflow-hidden flex flex-col relative">
@@ -90,7 +104,10 @@ export default function HomePage() {
             {/* Pickup */}
             <LocationPicker
               value={pickup}
-              onChange={(address) => setPickup(address)}
+              onChange={(address, lat, lng) => {
+                setPickup(address);
+                if (lat && lng) setPickupCoords({ lat, lng });
+              }}
               placeholder="Pickup Location"
               icon="pickup"
             />
@@ -98,13 +115,19 @@ export default function HomePage() {
             {/* Destination */}
             <LocationPicker
               value={destination}
-              onChange={(address) => setDestination(address)}
+              onChange={(address, lat, lng) => {
+                setDestination(address);
+                if (lat && lng) setDestinationCoords({ lat, lng });
+              }}
               placeholder="Destination"
               icon="destination"
             />
 
             {/* Request Button */}
-            <button className="w-full py-4 bg-[#FFD700] text-black font-bold text-lg rounded-xl hover:bg-[#FFC000] hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all mt-4 uppercase tracking-wide flex items-center justify-center gap-2">
+            <button
+              onClick={handleRequestRide}
+              className="w-full py-4 bg-[#FFD700] text-black font-bold text-lg rounded-xl hover:bg-[#FFC000] hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition-all mt-4 uppercase tracking-wide flex items-center justify-center gap-2"
+            >
               <span>Request Captain</span>
               <Car size={20} />
             </button>
@@ -135,6 +158,17 @@ export default function HomePage() {
           © 2026 3a Transportation.
         </div>
       </div>
+
+      {/* Ride Request View Overlay */}
+      {isRideRequested && (
+        <RideRequestView
+          pickup={pickup}
+          destination={destination}
+          pickupCoords={pickupCoords}
+          destinationCoords={destinationCoords}
+          onClose={() => setIsRideRequested(false)}
+        />
+      )}
     </main>
   );
 }
