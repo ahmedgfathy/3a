@@ -1,27 +1,9 @@
-<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 3a Logo with Road/Movement Theme -->
-  <g id="logo">
-    <!-- Road stripes forming "3" -->
-    <path d="M12 8 C18 8, 22 10, 22 14 C22 16, 20 18, 16 18 C20 18, 22 20, 22 23 C22 27, 18 29, 12 29" 
-          stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
-    
-    <!-- Letter "a" with car icon integrated -->
-    <g transform="translate(30, 0)">
-      <!-- "a" shape -->
-      <path d="M8 29 L8 20 C8 16, 10 14, 14 14 C18 14, 20 16, 20 20 L20 29 M20 23 C18 23, 16 24, 14 24 C10 24, 8 22, 8 20" 
-            stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    </g>
-    
-    <!-- Three road stripes indicating movement/speed -->
-    <g opacity="0.6">
-      <line x1="60" y1="10" x2="68" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <line x1="62" y1="16" x2="72" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <line x1="60" y1="22" x2="68" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </g>
-    
-    <!-- Text "Transportation" -->
-    <text x="76" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="currentColor">
-      TRANSPORTATION
-    </text>
-  </g>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gold Block Background (Replacing the Red Block) -->
+  <rect width="40" height="40" rx="4" fill="#FFD700"/>
+  
+  <!-- Stylized 'A' Cutout (Transparent/Black) 
+       A modern, bold 'A' shape.
+  -->
+  <path d="M20 5L32 32H27L24 24H16L13 32H8L20 5ZM22 19L20 12L18 19H22Z" fill="black" stroke="black" stroke-width="1"/>
 </svg>

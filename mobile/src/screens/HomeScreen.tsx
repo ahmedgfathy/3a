@@ -171,23 +171,14 @@ export default function HomeScreen() {
         <View style={styles.servicesContainer}>
           <Pressable style={styles.serviceItem} onPress={handleRequestRide}>
             <View style={styles.serviceIconContainer}>
-              <MaterialCommunityIcons name="car" size={32} color="#FFD700" />
+              <MaterialCommunityIcons name="car" size={36} color="#FFD700" />
             </View>
-            <Text style={styles.serviceLabel}>{t('home.services.ride')}</Text>
           </Pressable>
 
           <Pressable style={styles.serviceItem}>
             <View style={styles.serviceIconContainer}>
-              <MaterialCommunityIcons name="key" size={32} color="#FFD700" />
+              <MaterialCommunityIcons name="key" size={36} color="#FFD700" />
             </View>
-            <Text style={styles.serviceLabel}>{t('home.services.lease')}</Text>
-          </Pressable>
-
-          <Pressable style={styles.serviceItem}>
-            <View style={styles.serviceIconContainer}>
-              <MaterialCommunityIcons name="office-building" size={32} color="#FFD700" />
-            </View>
-            <Text style={styles.serviceLabel}>{t('home.services.corporate')}</Text>
           </Pressable>
         </View>
 
@@ -318,32 +309,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     paddingHorizontal: 10,
+    marginBottom: 20,
   },
   serviceItem: {
     alignItems: 'center',
   },
   serviceIconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(30, 30, 30, 0.9)',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#000000', // Pure Black
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#FFD700', // Gold border
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
+    borderWidth: 2,
+    borderColor: '#FFD700', // Gold Border
+    shadowColor: '#FFD700', // Gold Shadow
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 8,
   },
-  serviceLabel: {
-    color: '#FFF',
-    fontSize: 12,
-    fontWeight: '600',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 3
-  },
+  // Removed serviceLabel
 });

@@ -9,7 +9,7 @@
   },
   "About": {
     "title": "About Us",
-    "description": "We are a transportation services company offering ride-hailing through a WhatsApp Business group. Customers can request a ride at any time, and the nearest available driver responds immediately. We operate using a fleet of organized private cars driven by professional drivers. We also provide car leasing services, car sales assistance, and corporate transportation contracts."
+    "description": "We are a transportation services company offering ride-hailing through a WhatsApp Business group. Customers can request a ride at any time, and the nearest available driver responds immediately. We operate using a fleet of organized private cars driven by professional drivers. We also provide car leasing services and car sales assistance."
   },
   "Services": {
     "title": "Our Services",
@@ -31,16 +31,6 @@
         "We handle marketing, communication, and coordination",
         "Full management of the leasing and handover process"
       ]
-    },
-    "corporate": {
-      "title": "Corporate Transportation Contracts",
-      "description": "We provide long-term transportation services for factories and companies:",
-      "points": [
-        "Microbuses",
-        "Private cars",
-        "Daily staff transportation for workers, engineers, and technicians",
-        "Full scheduling and route management"
-      ]
     }
   },
   "WhyChooseUs": {
@@ -50,7 +40,6 @@
       "Large network of available drivers",
       "Organized fleet of private vehicles",
       "Car rental & sales marketplace",
-      "Corporate transportation contracts",
       "Flexible, affordable, and reliable solutions"
     ]
   },
@@ -111,35 +100,11 @@
         "title": "For Renters",
         "content": "Choose from a wide variety of well-maintained vehicles for daily, weekly, or monthly rental. Competitive rates and flexible terms."
       }
-    },
-    "corporate": {
-      "title": "Corporate Transportation",
-      "description": "Reliable transportation solutions for your business. We ensure your employees get to work on time and in comfort, improving productivity and satisfaction.",
-      "heroImageAlt": "Corporate shuttle bus in the city",
-      "features": [
-        "Customized routes and schedules",
-        "Fleet of microbuses and cars",
-        "Dedicated account manager",
-        "Monthly billing"
-      ],
-      "whyPartner": {
-        "title": "Why Partner With Us?",
-        "items": [
-          "Punctuality Guarantee: We track all trips to ensure on-time arrivals.",
-          "Cost Efficiency: Optimized routes to save fuel and time.",
-          "Comfort: Modern, air-conditioned vehicles.",
-          "Safety: Background-checked drivers and regular vehicle maintenance."
-        ]
-      },
-      "fleet": {
-        "title": "Our Fleet",
-        "description": "We offer a diverse fleet to match your specific needs, ranging from 4-seater sedans for executives to 14-seater microbuses for staff transport."
-      }
     }
   },
   "AboutPage": {
     "title": "About Us",
-    "content": "3a Transportation is a leading provider of innovative transportation solutions. We are dedicated to simplifying the way people move, offering a range of services from ride-hailing to corporate transportation and vehicle leasing. Our mission is to provide safe, reliable, and accessible transportation for everyone."
+    "content": "3a Transportation is a leading provider of innovative transportation solutions. We are dedicated to simplifying the way people move, offering a range of services from ride-hailing to vehicle leasing. Our mission is to provide safe, reliable, and accessible transportation for everyone."
   },
   "ContactPage": {
     "title": "Contact Us",
@@ -153,18 +118,16 @@
     "visionTitle": "Our Vision",
     "visionContent": "To be the most trusted and efficient transportation partner in the region, known for our commitment to quality, safety, and customer satisfaction.",
     "missionTitle": "Our Mission",
-    "missionContent": "To provide safe, reliable, and accessible transportation services that meet the diverse needs of our individual and corporate clients, while fostering a culture of excellence and innovation."
+    "missionContent": "To provide safe, reliable, and accessible transportation services that meet the diverse needs of our clients, while fostering a culture of excellence and innovation."
   },
   "Navbar": {
     "home": "Home",
     "rideHailing": "Ride-Hailing",
     "leasing": "Leasing",
-    "corporate": "Corporate",
     "about": "About",
     "vision": "Vision",
     "contact": "Contact",
     "ride": "Ride",
-    "lease": "Lease",
-    "corp": "Corp"
+    "lease": "Lease"
   }
 }

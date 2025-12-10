@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Animated, Easing } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, UrlTile, PROVIDER_DEFAULT } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface CarMarker {
@@ -133,8 +133,7 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
     <MapView
       style={styles.map}
       initialRegion={region}
-      // Removed customMapStyle to ensure map loads even if style is invalid
-      // Removed PROVIDER_GOOGLE to allow default provider fallback
+      // Use default provider (undefined) to support UrlTile
       scrollEnabled={false}
       zoomEnabled={false}
       pitchEnabled={false}
@@ -149,6 +148,21 @@ export default function MapBackground({ userLocation }: MapBackgroundProps) {
       loadingEnabled={true}
       loadingIndicatorColor="#FFD700"
     >
+      {/* OpenStreetMap Fallback Tiles - Works without API Key */}
+      <UrlTile
+        urlTemplate="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        maximumZ={19}
+        flipY={false}
+        zIndex={-1}
+      />
+
+      {/* Dark Overlay for OSM tiles to match app theme */}
+      <UrlTile
+        urlTemplate="http://tile.stamen.com/toner-lines/{z}/{x}/{y}.png" // Optional: Lines overlay or just use a View overlay in parent
+        maximumZ={19}
+        zIndex={-1}
+        opacity={0} // Just placeholder, better handled by parent View overlay
+      />
       {cars.map((car) => (
         <Marker.Animated
           key={car.id}

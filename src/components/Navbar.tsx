@@ -14,10 +14,10 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image 
-              src="/logo.svg" 
-              alt="3a Transportation" 
-              width={120} 
+            <Image
+              src="/logo.svg"
+              alt="3a Transportation"
+              width={120}
               height={40}
               className="h-8 w-auto dark:invert"
               priority
@@ -37,10 +37,6 @@ export default function Navbar() {
             <Link href="/services/leasing" className="flex items-center gap-2 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
               <Key size={20} />
               <span className="text-sm font-medium">{t('leasing')}</span>
-            </Link>
-            <Link href="/services/corporate" className="flex items-center gap-2 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
-              <Building2 size={20} />
-              <span className="text-sm font-medium">{t('corporate')}</span>
             </Link>
             <Link href="/about" className="flex items-center gap-2 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
               <Info size={20} />
@@ -87,12 +83,6 @@ export default function Navbar() {
                 <Key size={20} />
               </div>
               <span className="text-xs font-medium">{t('lease')}</span>
-            </Link>
-            <Link href="/services/corporate" className="flex flex-col items-center gap-1 min-w-[60px]">
-              <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
-                <Building2 size={20} />
-              </div>
-              <span className="text-xs font-medium">{t('corp')}</span>
             </Link>
             <Link href="/about" className="flex flex-col items-center gap-1 min-w-[60px]">
               <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
